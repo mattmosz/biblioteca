@@ -7,6 +7,7 @@ import { Iautor } from './Interfaces/iautor';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { AutorService } from './Services/autor.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -18,16 +19,60 @@ import { AutorService } from './Services/autor.service';
 export class AppComponent {
   title = 'Biblioteca';
 
-  constructor(private ServicioLibro:LibroService, private ServicioAutor:AutorService){}
+  constructor(private ServicioLibro:LibroService, private ServicioAutor:AutorService, private modalService: NgbModal){}
 
   listaLibros:Ilibro[]=[];
   listaAutores:Iautor[]=[];
+  nuevoLibro: Ilibro = {
+    libro_id: 0,
+    titulo: '',
+    genero: '',
+    fecha_publicacion: new Date(),
+    isbn: '',
+    autor: ''
+  };
 
   ngOnInit(){
     this.ServicioLibro.todos().subscribe(
       (data) => {this.listaLibros = data;
       console.log(this.listaLibros);
     }
+    );
+  }
+
+  abrirModal() {
+    this.modalService.open('insertarLibroModal');
+  }
+
+  insertarLibro() {
+    const nuevoLibro: Ilibro = {
+      libro_id: 0,
+      titulo: '',
+      genero: '',
+      fecha_publicacion: new Date(),
+      isbn: '',
+      autor: ''
+    };
+    this.ServicioLibro.insertar(nuevoLibro).subscribe(
+      (response: boolean) => {
+        if (response) {
+          this.listaLibros.push(nuevoLibro);
+          this.modalService.dismissAll();
+          this.nuevoLibro = {
+            libro_id: 0,
+            titulo: '',
+            genero: '',
+            fecha_publicacion: new Date(),
+            isbn: '',
+            autor: ''
+          };
+        } else {
+          console.error('Error al insertar el libro');
+        }
+      },
+      (error) => {
+        console.error('Error al insertar el libro', error);
+      }
     );
   }
 
@@ -74,7 +119,7 @@ export class AppComponent {
   }
 
   insertar(titulo: string, genero: string, fecha_publicacion: string, isbn: string) {
-    const nuevoLibro: Ilibro = { libro_id: 0, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn };
+    const nuevoLibro: Ilibro = { libro_id: 0, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn, autor: '' };
     this.ServicioLibro.insertar(nuevoLibro).subscribe(
       (data) => {
         if (data) {
@@ -88,7 +133,7 @@ export class AppComponent {
   }
 
   actualizar(libro_id: number, titulo: string, genero: string, fecha_publicacion: string, isbn: string) {
-    const nuevoLibro: Ilibro = { libro_id, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn };
+    const nuevoLibro: Ilibro = { libro_id, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn, autor: '' };
     this.ServicioLibro.actualizar(nuevoLibro).subscribe(
       (data) => {
         if (data) {

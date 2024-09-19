@@ -5,6 +5,7 @@ export interface Ilibro {
     genero: string;
     fecha_publicacion: Date;
     isbn: string;
+    autor: string;
 
 }
 
