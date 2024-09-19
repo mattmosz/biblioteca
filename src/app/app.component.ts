@@ -35,7 +35,7 @@ export class AppComponent {
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        /*this.ServicioLibro.eliminar(libro_id).subscribe(
+        this.ServicioLibro.eliminar(libro_id).subscribe(
           (data) => {
             if(data){
               Swal.fire('¡Eliminado!', '', 'success');
@@ -44,8 +44,38 @@ export class AppComponent {
               Swal.fire('¡Error!', '', 'error');
             }
           }
-        );*/
+        );
       }
     })
   }
+
+  insertar(titulo: string, genero: string, fecha_publicacion: string, isbn: string) {
+    const nuevoLibro: Ilibro = { libro_id: 0, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn };
+    this.ServicioLibro.insertar(nuevoLibro).subscribe(
+      (data) => {
+        if (data) {
+          Swal.fire('¡Insertado!', '', 'success');
+          this.ngOnInit();
+        } else {
+          Swal.fire('¡Error!', '', 'error');
+        }
+      }
+    );
+  }
+
+  actualizar(libro_id: number, titulo: string, genero: string, fecha_publicacion: string, isbn: string) {
+    const nuevoLibro: Ilibro = { libro_id, titulo, genero, fecha_publicacion: new Date(fecha_publicacion), isbn };
+    this.ServicioLibro.actualizar(nuevoLibro).subscribe(
+      (data) => {
+        if (data) {
+          Swal.fire('¡Actualizado!', '', 'success');
+          this.ngOnInit();
+        } else {
+          Swal.fire('¡Error!', '', 'error');
+        }
+      }
+    );
+  }
+
+  
 }
