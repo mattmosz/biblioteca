@@ -28,30 +28,59 @@
     <h1 class="mt-5">Lista de Libros</h1>
     <table class="table table-striped table-bordered table-responsive">
       <thead class="table-dark">
-        <tr>
-          <th>#</th>
-          <th>Titulo</th>
-          <th>Genero</th>
-          <th>Fecha Publicacion</th>
-          <th>ISBN</th>
-          <th>Autor</th>
-          <th>Opciones</th>
-        </tr>
+      <tr>
+        <th>#</th>
+        <th>Titulo</th>
+        <th>Genero</th>
+        <th>Fecha Publicacion</th>
+        <th>ISBN</th>
+        <th>Autor</th>
+        <th>Opciones</th>
+      </tr>
       </thead>
       <tbody>
       @for (libro of listaLibros; track $index){
-        <tr>
-          <td>{{ $index + 1}}</td>
-          <td>{{libro.titulo}}</td>
-          <td>{{libro.genero}}</td>
-          <td>{{libro.fecha_publicacion}}</td>
-          <td>{{libro.isbn}}</td>
-          <td>Hola</td>
-          <td>
-            <button type="button" class="btn btn-success">Editar</button>
-            <button (click)="eliminar(libro.libro_id)" type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
+      <tr>
+        <td>{{ $index + 1}}</td>
+        <td>{{libro.titulo}}</td>
+        <td>{{libro.genero}}</td>
+        <td>{{libro.fecha_publicacion}}</td>
+        <td>{{libro.isbn}}</td>
+        <td>Hola</td>
+        <td>
+        <button type="button" class="btn btn-success">Editar</button>
+        <button (click)="eliminar(libro.libro_id)" type="button" class="btn btn-danger">Eliminar</button>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+
+    <h1 class="mt-5">Lista de Autores</h1>
+    <table class="table table-striped table-bordered table-responsive">
+      <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Fecha Nacimiento</th>
+        <th>Nacionalidad</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      @for (autor of listaAutores; track $index){
+      <tr>
+        <td>{{ $index + 1}}</td>
+        <td>{{autor.nombre}}</td>
+        <td>{{autor.apellido}}</td>
+        <td>{{autor.fecha_nacimiento}}</td>
+        <td>{{autor.nacionalidad}}</td>
+        <td>
+        <button type="button" class="btn btn-success">Editar</button>
+        <button (click)="eliminarAutor(autor.autor_id)" type="button" class="btn btn-danger">Eliminar</button>
+        </td>
+      </tr>
       }
       </tbody>
     </table>

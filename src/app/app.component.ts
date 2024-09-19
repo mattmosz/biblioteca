@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { LibroService } from './Services/libro.service';
 import { Ilibro } from './Interfaces/ilibro';
 import Swal from 'sweetalert2';
+import { Iautor } from './Interfaces/iautor';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
   constructor(private ServicioLibro:LibroService){}
 
   listaLibros:Ilibro[]=[];
+  listaAutores:Iautor[]=[];
 
   ngOnInit(){
     this.ServicioLibro.todos().subscribe(
@@ -77,5 +79,5 @@ export class AppComponent {
     );
   }
 
-  
+
 }
