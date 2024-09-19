@@ -16,7 +16,7 @@ export class AutorService {
     return this.autor.get<Iautor[]>(this.apiurl + 'todos');
   }
 
-  eliminar(autor_id:number): Observable<boolean>{
+  eliminarAutor(autor_id:number): Observable<boolean>{
     return this.autor.get<boolean>(this.apiurl + 'eliminar&autor_id=' + autor_id);
   }
 

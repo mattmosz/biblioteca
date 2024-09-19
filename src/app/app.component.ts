@@ -4,6 +4,9 @@ import { LibroService } from './Services/libro.service';
 import { Ilibro } from './Interfaces/ilibro';
 import Swal from 'sweetalert2';
 import { Iautor } from './Interfaces/iautor';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { AutorService } from './Services/autor.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +18,7 @@ import { Iautor } from './Interfaces/iautor';
 export class AppComponent {
   title = 'Biblioteca';
 
-  constructor(private ServicioLibro:LibroService){}
+  constructor(private ServicioLibro:LibroService, private ServicioAutor:AutorService){}
 
   listaLibros:Ilibro[]=[];
   listaAutores:Iautor[]=[];
@@ -26,6 +29,25 @@ export class AppComponent {
       console.log(this.listaLibros);
     }
     );
+  }
+
+  generarReporte() {
+    const doc = new jsPDF();
+    const col = ["#", "Titulo", "Genero", "Fecha Publicacion", "ISBN"];
+    const rows: any[][] = [];
+
+    this.listaLibros.forEach((libro, index) => {
+      const temp = [
+        index + 1,
+        libro.titulo,
+        libro.genero,
+        libro.fecha_publicacion,
+        libro.isbn
+      ];
+      rows.push(temp);
+    });
+    autoTable(doc, { head: [col], body: rows, startY: 10 });
+    doc.save('reporte_libros.pdf');
   }
 
   eliminar(libro_id:number){
@@ -77,6 +99,29 @@ export class AppComponent {
         }
       }
     );
+  }
+
+  eliminarAutor(autor_id:number){
+    Swal.fire({
+      title: '¿Está seguro que desea eliminar el autor?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ServicioAutor.eliminarAutor(autor_id).subscribe(
+          (data) => {
+            if(data){
+              Swal.fire('¡Eliminado!', '', 'success');
+              this.ngOnInit();
+            }else{
+              Swal.fire('¡Error!', '', 'error');
+            }
+          }
+        );
+      }
+    })
   }
 
 
